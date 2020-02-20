@@ -1,0 +1,57 @@
+node('slavejenkins') {
+
+    def  registry = "jpgibart/projet_cd_test"
+    def  registryCredential = 'dockerhub'
+    def  dockerImage = ''
+
+    stage('Cloning Git for jenkins file'){       
+                git url: 'https://gitlab.com/projetcd/pipelines.git'
+    } 
+        
+    stage('cloning Git for devopsapp') {
+        // Get some code from a GitHub repository
+        git branch: 'dev', url: 'https://gitlab.com/projetcd/devopsapp.git'
+    }
+        
+    withMaven(
+        // Maven installation declared in the Jenkins "Global Tool Configuration"
+        maven: 'maven') {
+
+      // Run the maven build
+      sh "mvn clean package"
+    }
+
+    stage('cloning git for image docker') {
+        // Get some code from a GitHub repository
+        git url: 'https://gitlab.com/projetcd/pipelines.git'
+        
+        sh "echo '\nCOPY target/devops-1.0.war /bin' >> Dockerfile"
+    }
+
+    stage('Building docker Image') {        
+        script {
+            dockerImage = docker.build(registry + ":2.0", ".")        
+        }
+    }
+    
+    stage('Push docker Image'){
+        script{
+            docker.withRegistry('', registryCredential){
+                dockerImage.push()             
+            }
+        } 
+    }
+    
+    stage('Cloning Git for playbook ansible'){       
+                git url: 'https://gitlab.com/projetcd/pipelines.git'
+    }
+
+    stage('Deploiement Ansible prod') {
+        ansiblePlaybook (
+            colorized: true, 
+            become: true,
+            playbook: 'playbook_prod.yml',
+            inventory: 'inventory.ini'
+        )
+    }
+}
