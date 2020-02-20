@@ -33,6 +33,7 @@ node('slavejenkins') {
             dockerImage = docker.build registry + ":1.0"        
         }
     }
+    
     stage('Push docker Image'){
         script{
             docker.withRegistry('', registryCredential){
@@ -40,6 +41,11 @@ node('slavejenkins') {
             }
         } 
     }
+    
+    stage('Cloning Git for playbook ansible'){       
+                git url: 'https://gitlab.com/projetcd/pipelines.git'
+    }
+
     stage('Deploiement Ansible prod') {
         ansiblePlaybook (
             colorized: true, 
