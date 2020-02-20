@@ -6,7 +6,21 @@ node('slavejenkins') {
 
     stage('Cloning Git'){       
                 git url: 'https://gitlab.com/projetcd/pipelines.git'           
-        }   
+        } 
+        
+    stage('Git') {
+        // Get some code from a GitHub repository
+        git url: 'https://gitlab.com/projetcd/devopsapp.git'
+    }
+        
+    withMaven(
+        // Maven installation declared in the Jenkins "Global Tool Configuration"
+        maven: 'maven') {
+
+      // Run the maven build
+      sh "mvn clean package"
+    }
+
     stage('Building-Image') {        
         script {
             dockerImage = docker.build registry + ":1.0"        
@@ -19,19 +33,4 @@ node('slavejenkins') {
             }
         } 
     }
-
-
-    
-//    stage('Git') {
-        // Get some code from a GitHub repository
-//        git url: 'https://gitlab.com/projetcd/devopsapp.git'
- //   }
-
-//    withMaven(
-        // Maven installation declared in the Jenkins "Global Tool Configuration"
-//        maven: 'maven') {
-
-      // Run the maven build
-//      sh "mvn clean package"
-//    }
 }
