@@ -25,7 +25,8 @@ node('slavejenkins') {
         // Get some code from a GitHub repository
         git url: 'https://gitlab.com/projetcd/dockerfile.git'
         
-        sh "echo '\nCOPY target/devops-1.0.war' >> Dockerfile"
+        sh "echo '\nCOPY target/devops-1.0.war /bin' >> Dockerfile"
+        sh "echo '\nRUN java -jar /bin/devops-1.0.war' >> Dockerfile"
         
         sh "cat Dockerfile"
     }
