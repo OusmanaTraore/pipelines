@@ -4,11 +4,11 @@ node('slavejenkins') {
     def  registryCredential = 'dockerhub'
     def  dockerImage = ''
 
-    stage('Cloning Git'){       
+    stage('Cloning Git for jenkins file'){       
                 git url: 'https://gitlab.com/projetcd/pipelines.git'           
         } 
         
-    stage('Git') {
+    stage('cloning Git for devopsapp') {
         // Get some code from a GitHub repository
         git url: 'https://gitlab.com/projetcd/devopsapp.git'
     }
@@ -21,17 +21,17 @@ node('slavejenkins') {
       sh "mvn clean package"
     }
 
-    stage('Git') {
+    stage('cloning git for image docker') {
         // Get some code from a GitHub repository
         git url: 'https://gitlab.com/projetcd/dockerfile.git'
     }
 
-    stage('Building-Image') {        
+    stage('Building docker Image') {        
         script {
             dockerImage = docker.build registry + ":1.0"        
         }
     }
-    stage('Deploy-Image'){
+    stage('Push docker Image'){
         script{
             docker.withRegistry('', registryCredential){
                 dockerImage.push()             
