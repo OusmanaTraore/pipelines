@@ -6,7 +6,7 @@ node('slavejenkins') {
 
     stage('Cloning Git for jenkins file'){       
                 git url: 'https://gitlab.com/projetcd/pipelines.git'
-        } 
+    } 
         
     stage('cloning Git for devopsapp') {
         // Get some code from a GitHub repository
