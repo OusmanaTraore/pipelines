@@ -5,7 +5,7 @@ node('slavejenkins') {
     def  dockerImage = ''
 
     stage('Cloning Git for jenkins file'){       
-                git url: 'https://gitlab.com/projetcd/pipelines.git'
+        git url: 'https://gitlab.com/projetcd/pipelines.git'
     } 
         
     stage('cloning Git for devopsapp') {
@@ -25,12 +25,12 @@ node('slavejenkins') {
         // Get some code from a GitHub repository
         git url: 'https://gitlab.com/projetcd/pipelines.git'
         
-        sh "echo '\nCOPY target/devops-1.0.war /bin' >> Dockerfile"
+        sh "echo '\nCOPY target/devops-1.0.war /bin' >> ./test/Dockerfile"
     }
 
     stage('Building docker Image') {        
         script {
-            dockerImage = docker.build(registry + ":2.0", ".")        
+            dockerImage = docker.build(registry + ":2.0", "./test")        
         }
     }
     
@@ -46,11 +46,11 @@ node('slavejenkins') {
                 git url: 'https://gitlab.com/projetcd/pipelines.git'
     }
 
-    stage('Deploiement Ansible prod') {
+    stage('Deploiement Ansible test') {
         ansiblePlaybook (
             colorized: true, 
             become: true,
-            playbook: 'playbook_prod.yml',
+            playbook: 'playbook_test.yml',
             inventory: 'inventory.ini'
         )
     }
