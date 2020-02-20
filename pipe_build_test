@@ -10,7 +10,7 @@ node('slavejenkins') {
         
     stage('cloning Git for devopsapp') {
         // Get some code from a GitHub repository
-        git branch: 'develop', url: 'https://gitlab.com/projetcd/devopsapp.git'
+        git branch: 'master', url: 'https://gitlab.com/projetcd/devopsapp.git'
     }
         
     withMaven(
@@ -30,7 +30,7 @@ node('slavejenkins') {
 
     stage('Building docker Image') {        
         script {
-            dockerImage = docker.build(registry + ":1.0", ".")        
+            dockerImage = docker.build(registry + ":2.0", ".")        
         }
     }
     
