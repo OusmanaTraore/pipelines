@@ -1,4 +1,9 @@
 node('slavejenkins') {
+
+    def  registry = "jpgibart/dockerpipeline_jpg"
+    def  registryCredential = 'dockerhub'
+    def  dockerImage = ''
+
     
     stage('Git') {
         // Get some code from a GitHub repository
