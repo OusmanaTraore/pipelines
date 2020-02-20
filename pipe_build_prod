@@ -23,7 +23,7 @@ node('slavejenkins') {
 
     stage('cloning git for image docker') {
         // Get some code from a GitHub repository
-        git url: 'https://gitlab.com/projetcd/dockerfile.git'
+        //git url: 'https://gitlab.com/projetcd/pipelines.git'
         
         sh "echo '\nCOPY target/devops-1.0.war /bin' >> Dockerfile"
     }
