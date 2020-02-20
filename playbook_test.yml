@@ -1,0 +1,12 @@
+---
+- hosts: server_test
+  become: yes
+  tasks:
+  - name: run the devops container
+    docker_container:
+      name: devopsapp
+      image: jpgibart/projet_cd:1.0
+      state: started
+      ports:
+       - "8081:8081"
+      command: java -jar /bin/devops-1.0.war
