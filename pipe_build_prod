@@ -40,4 +40,12 @@ node('slavejenkins') {
             }
         } 
     }
+    stage('Deploiement Ansible prod') {
+    ansiblePlaybook (
+      colorized: true, 
+      become: true,
+      playbook: 'playbook_prod.yml'
+      inventory: 'inventory.ini'
+    )
+    }
 }
