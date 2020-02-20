@@ -21,6 +21,11 @@ node('slavejenkins') {
       sh "mvn clean package"
     }
 
+    stage('Git') {
+        // Get some code from a GitHub repository
+        git url: 'https://gitlab.com/projetcd/dockerfile.git'
+    }
+
     stage('Building-Image') {        
         script {
             dockerImage = docker.build registry + ":1.0"        
