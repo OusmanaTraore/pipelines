@@ -1,10 +1,12 @@
 ---
-hosts: server_prod
-- name: run the devops container
-  docker_container:
-    name: devopsapp
-    image: projet_cd:1.0
-    state: started
-    ports:
-     - "8080:8080"
-    command: java -jar devops-1.0.war
+- hosts: server_prod
+  become: yes
+  tasks:
+  - name: run the devops container
+    docker_container:
+      name: devopsapp
+      image: projet_cd:1.0
+      state: started
+      ports:
+       - "8080:8080"
+      command: java -jar devops-1.0.war
