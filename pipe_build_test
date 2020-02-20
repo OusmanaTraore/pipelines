@@ -10,7 +10,7 @@ node('slavejenkins') {
         
     stage('cloning Git for devopsapp') {
         // Get some code from a GitHub repository
-        git branch: 'dev', url: 'https://gitlab.com/projetcd/devopsapp.git'
+        git branch: 'develop', url: 'https://gitlab.com/projetcd/devopsapp.git'
     }
         
     withMaven(
