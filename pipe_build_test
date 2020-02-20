@@ -30,7 +30,7 @@ node('slavejenkins') {
 
     stage('Building docker Image') {        
         script {
-            dockerImage = docker.build(registry + ":4.0", ".")        
+            dockerImage = docker.build(registry + ":5.0", ".")        
         }
     }
     
