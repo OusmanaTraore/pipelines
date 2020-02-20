@@ -44,7 +44,7 @@ node('slavejenkins') {
         ansiblePlaybook {
             colorized: true, 
             become: true,
-            playbook: 'playbook_prod.yml'
+            playbook: 'playbook_prod.yml',
             inventory: 'inventory.ini'
         }
     }
