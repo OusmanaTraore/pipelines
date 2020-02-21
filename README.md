@@ -34,3 +34,7 @@ l'appli(branche develop) dans un container sur le serveur de test.
 La branche Master est déployée sur le serveur de prod et est exposée sur le port 8080.
 
 La branche Develop est déployée sur le serveur de test et est exposée sur le port 8081.
+
+Un hook permet le lancement des jobs jenkins test et prod en cas de changement du code source
+, au plus 1 minutes plus tard ...
+
