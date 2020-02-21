@@ -8,6 +8,8 @@ serveurs test ou prod.
 
 Plus en détail:
 
+(chaque fichier est commenté !!)
+
 Dockerfile : fichier de base pour construire une image docker. Il contient centos et java.
 
 Inventory.ini : fichier permettant d'identifier les serveurs de prod et de test;
