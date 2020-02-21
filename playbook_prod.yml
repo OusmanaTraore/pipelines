@@ -2,9 +2,13 @@
 - hosts: server_prod
   become: yes
   tasks:
+  - name: Stop a container
+    docker_container:
+    name: devopsappprod
+    state: stopped
   - name: run the devops container
     docker_container:
-      name: devopsapp
+      name: devopsappprod
       image: jpgibart/projet_cd:latest
       state: started
       ports:
