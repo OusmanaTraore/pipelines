@@ -22,7 +22,7 @@ pipe_build_test : fichier jenkins scripté pour tracker la branche Develop du
 projet. Ensuite, même démarche que pour la prod mais sur le servuer de test.
 
 pipe_rollback : fichier jenkins scripté pour faire un rollback de version 
-sur la prod.
+sur la prod. Le job jenkins associé demande un paramètre "version" lors de son lancement.
 
 playbook_prod.yml : fichier ansible pour déployer et faire tourner 
 l'appli (branche master) dans un container sur le serveur de prod.
