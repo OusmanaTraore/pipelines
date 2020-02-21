@@ -1,12 +1,20 @@
+// on lance les jobs sur le slave Jenkins
+
 node('slavejenkins') {
+
+// on définit les variables d'environnement pour l'image Docker avec un credential pour se connecter à Docker hub
 
     def  registry = "jpgibart/projet_cd_test"
     def  registryCredential = 'dockerhub'
     def  dockerImage = ''
 
+//premier stage : on récupère le pipeline dans notre projet
+
     stage('Cloning Git for jenkins file'){       
         git url: 'https://gitlab.com/projetcd/pipelines.git'
     } 
+        
+//on va chercher la branche develop de notre appli sur git et on la build avec maven        
         
     stage('cloning Git for devopsapp') {
         // Get some code from a GitHub repository
