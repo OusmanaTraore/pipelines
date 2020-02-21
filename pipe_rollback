@@ -1,0 +1,45 @@
+node('slavejenkins') {
+
+    def  registry = "jpgibart/projet_cd"
+    def  registryCredential = 'dockerhub'
+    def  dockerImage = ''
+
+    stage('Cloning Git for jenkins file'){       
+                git url: 'https://gitlab.com/projetcd/pipelines.git'
+    } 
+
+//    stage('Building docker Image') {        
+//        script {
+//        
+//        curl -X DELETE -u "$user:$pass" https://index.docker.io/v1/repositories/$namespace/$reponame/
+//            dockerImage = docker.build(registry + ":${currentBuild.number}", ".")        
+//        }
+//    }
+    
+    stage('Push docker Image'){
+        script{
+            docker.withRegistry('', registryCredential){
+                dockerImage.push()             
+            }
+        } 
+    }
+    
+    stage('Cloning Git for playbook ansible'){       
+                git url: 'https://gitlab.com/projetcd/pipelines.git'
+    }
+
+    stage('changing version in our playbook') {
+        
+        sh "sed -i 's/projet_cd/projet_cd:${currentBuild.number}/' playbook_prod.yml"
+    }
+
+
+    stage('Deploiement Ansible prod') {
+        ansiblePlaybook (
+            colorized: true, 
+            become: true,
+            playbook: 'playbook_prod.yml',
+            inventory: 'inventory.ini'
+        )
+    }
+}
