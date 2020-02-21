@@ -11,6 +11,7 @@
       name: devopsappprod
       image: jpgibart/projet_cd
       state: started
+      restart: yes
       ports:
        - "8080:8080"
       command: java -jar /bin/devops-1.0.war
