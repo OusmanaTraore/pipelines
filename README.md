@@ -3,7 +3,7 @@ Ce repo contient les Pipelines utilisés pour le projet.
 Il contient également le Dockerfile de base utilisé pour la construction des 
 images, en test ou en prod.
 
-Enfin, il contient les deux playbook Ansible pour déployer les verions sur les
+Enfin, il contient les deux playbook Ansible pour déployer les versions sur les
 serveurs test ou prod.
 
 Plus en détail:
