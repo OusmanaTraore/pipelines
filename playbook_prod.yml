@@ -9,8 +9,8 @@
   - name: run the devops container
     docker_container:
       name: devopsapp
-      image: jpgibart/projet_cd:2.0
-      state: started
+      image: jpgibart/projet_cd
+      state: present
       ports:
        - "8080:8080"
       command: java -jar /bin/devops-1.0.war
