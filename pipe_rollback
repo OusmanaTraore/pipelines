@@ -1,26 +1,32 @@
+//toujours sur notre slave jenkins
+
 node('slavejenkins') {
 
-    def  registry = "jpgibart/projet_cd"
-    def  registryCredential = 'dockerhub'
-    def  dockerImage = ''
 
-    stage('Cloning Git for jenkins file'){       
-                git url: 'https://gitlab.com/projetcd/pipelines.git'
+//on récupère le jenkinsfile à partir de notre git
+
+    stage('recup Git jenkinsfile'){       
+        git url: 'https://gitlab.com/projetcd/pipelines.git'
     } 
 
-//    stage('Building docker Image') {        
+//tentative d effacement de notre image dans le dockerhub : avortée !!!!!
+
+//    stage('remove docker Image') {        
 //        script {
-//        
 //        curl -X DELETE -u "$user:$pass" https://index.docker.io/v1/repositories/$namespace/$reponame/
-//            dockerImage = docker.build(registry + ":${currentBuild.number}", ".")        
 //        }
 //    }
     
-    
-    stage('changing version in our playbook') {
+
+//on change la config du playbook : le pipe est lancé avec un paramètre utilisateur
+
+    stage('config du playbook') {
+        
+        //la variable env.version est saisie lors du lancement du job jenkins
         sh "sed -i 's/projet_cd/projet_cd:${env.version}/' playbook_prod.yml"
     }
 
+//on déploie la version choisie par le user
 
     stage('Deploiement Ansible prod') {
         ansiblePlaybook (
