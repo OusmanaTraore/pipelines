@@ -38,3 +38,4 @@ La branche Develop est déployée sur le serveur de test et est exposée sur le 
 Un hook permet le lancement des jobs jenkins test et prod en cas de changement du code source
 , au plus 1 minute plus tard ...
 
+Les résultats(logs Blue Ocean) obtenus sont visibles dans les fichiers result_prod.jpg et result_test.jpg
