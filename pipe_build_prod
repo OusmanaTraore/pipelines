@@ -59,7 +59,7 @@ node('slavejenkins') {
     
 //on push l'image sur Dockerhub    
 
-    stage('Push docker Image'){
+    stage('on push l'image Docker sur Docker hub'){
         script{
             docker.withRegistry('', registryCredential){
                 dockerImage.push()             
