@@ -8,7 +8,7 @@ node('slavejenkins') {
     def  registryCredential = 'dockerhub'
     def  dockerImage = ''
 
-    properties([pipelineTriggers([cron('* * * * *')])])
+    properties([pipelineTriggers([pollSCM('* * * * *')])])
 
 
 //premier stage : on récupère le pipeline dans notre projet
