@@ -36,5 +36,5 @@ La branche Master est déployée sur le serveur de prod et est exposée sur le p
 La branche Develop est déployée sur le serveur de test et est exposée sur le port 8081.
 
 Un hook permet le lancement des jobs jenkins test et prod en cas de changement du code source
-, au plus 1 minutes plus tard ...
+, au plus 1 minute plus tard ...
 
