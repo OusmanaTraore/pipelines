@@ -20,8 +20,8 @@ node('slavejenkins') {
     
     stage('changing version in our playbook') {
     
-        sh 'echo '${version}
-        sh "sed -i 's/projet_cd/projet_cd:${version}/' playbook_prod.yml"
+        sh "echo 'version"
+        sh "sed -i 's/projet_cd/projet_cd:version/' playbook_prod.yml"
     }
 
 
