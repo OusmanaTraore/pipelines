@@ -8,7 +8,7 @@ serveurs test ou prod.
 
 Plus en détail:
 
-Dockerfile : fichier de base pour construire une image docker. Il contient centos7 et java.
+Dockerfile : fichier de base pour construire une image docker. Il contient centos et java.
 
 Inventory.ini : fichier permettant d'identifier les serveurs de prod et de test;
 Ils seront différenciés par le port ouvert pour la connexion ssh.
