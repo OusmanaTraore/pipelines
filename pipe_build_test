@@ -30,7 +30,7 @@ node('slavejenkins') {
 
     stage('Building docker Image') {        
         script {
-            dockerImage = docker.build(registry + ":5.0", ".")        
+            dockerImage = docker.build(registry + ":${currentBuild.number}", ".")        
         }
     }
     
@@ -45,6 +45,12 @@ node('slavejenkins') {
     stage('Cloning Git for playbook ansible'){       
                 git url: 'https://gitlab.com/projetcd/pipelines.git'
     }
+    
+    stage('changing version in our playbook') {
+        
+        sh "sed -i 's/projet_cd/projet_cd_test:${currentBuild.number}/' playbook_prod.yml"
+    }
+
 
     stage('Deploiement Ansible test') {
         ansiblePlaybook (
