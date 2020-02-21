@@ -16,18 +16,7 @@ node('slavejenkins') {
 //        }
 //    }
     
-    stage('Push docker Image'){
-        script{
-            docker.withRegistry('', registryCredential){
-                dockerImage.push()             
-            }
-        } 
-    }
     
-    stage('Cloning Git for playbook ansible'){       
-                git url: 'https://gitlab.com/projetcd/pipelines.git'
-    }
-
     stage('changing version in our playbook') {
         
         sh "sed -i 's/projet_cd/projet_cd:${currentBuild.number}/' playbook_prod.yml"
