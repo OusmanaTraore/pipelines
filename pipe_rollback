@@ -18,18 +18,16 @@ node('slavejenkins') {
     
     
     stage('changing version in our playbook') {
-    
-        sh "echo ${env.version}"
         sh "sed -i 's/projet_cd/projet_cd:${env.version}/' playbook_prod.yml"
     }
 
 
-//    stage('Deploiement Ansible prod') {
-//        ansiblePlaybook (
-//            colorized: true, 
-//            become: true,
-//            playbook: 'playbook_prod.yml',
-//            inventory: 'inventory.ini'
-//        )
-//    }
+    stage('Deploiement Ansible prod') {
+        ansiblePlaybook (
+            colorized: true, 
+            become: true,
+            playbook: 'playbook_prod.yml',
+            inventory: 'inventory.ini'
+        )
+    }
 }
