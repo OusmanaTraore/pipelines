@@ -10,39 +10,54 @@ node('slavejenkins') {
 
 //premier stage : on récupère le pipeline dans notre projet
 
-    stage('Cloning Git for jenkins file'){       
+    stage('recup sur Git du Jenkinsfile'){       
         git url: 'https://gitlab.com/projetcd/pipelines.git'
     } 
         
 //on va chercher la branche develop de notre appli sur git et on la build avec maven        
         
-    stage('cloning Git for devopsapp') {
-        // Get some code from a GitHub repository
+    stage('recup Git du prejet') {
+        // pour le test, on va chercher la branche develop
         git branch: 'develop', url: 'https://gitlab.com/projetcd/devopsapp.git'
     }
-        
-    withMaven(
-        // Maven installation declared in the Jenkins "Global Tool Configuration"
-        maven: 'maven') {
 
-      // Run the maven build
-      sh "mvn clean package"
+    stage('build maven du projet') {        
+        withMaven(
+        
+            // la config est dansJenkins "Global Tool Configuration"
+            
+            maven: 'maven') {
+
+            // on build le war
+            
+            sh "mvn clean package"
+        }
     }
 
-    stage('cloning git for image docker') {
-        // Get some code from a GitHub repository
+//on va rechercher le Dockerfile par un git
+
+    stage('recup git du Dockerfile') {
+        
+        // on git notre projet again pour recup le Dockerfile
+        
         git url: 'https://gitlab.com/projetcd/pipelines.git'
+        
+        //on ajoute le war dans notre image docker
         
         sh "echo '\nCOPY target/devops-1.0.war /bin' >> Dockerfile"
     }
 
-    stage('Building docker Image') {        
+//on build l'image docker avec un tag de version jenkins
+
+    stage('Build image docker') {        
         script {
             dockerImage = docker.build(registry + ":${currentBuild.number}", ".")        
         }
     }
     
-    stage('Push docker Image'){
+//on push l'image sur Dockerhub
+
+    stage('Push image docker'){
         script{
             docker.withRegistry('', registryCredential){
                 dockerImage.push()             
@@ -50,15 +65,20 @@ node('slavejenkins') {
         } 
     }
     
-    stage('Cloning Git for playbook ansible'){       
+//on va encore rechercher notre projet pour obtenir notre playbook
+    
+    stage('recup playbook Git'){       
                 git url: 'https://gitlab.com/projetcd/pipelines.git'
     }
     
-    stage('changing version in our playbook') {
+//on change la version à déployer dans le playbook avec un sed
+    
+    stage('config du playbook') {
         
         sh "sed -i 's/projet_cd_test/projet_cd_test:${currentBuild.number}/' playbook_test.yml"
     }
 
+//on déploie sur le serveur de test avec Ansible
 
     stage('Deploiement Ansible test') {
         ansiblePlaybook (
