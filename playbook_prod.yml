@@ -8,8 +8,8 @@
 #    state: stopped
   - name: run the devops container
     docker_container:
-      name: devopsappprod
-      image: jpgibart/projet_cd
+      name: devopsapp
+      image: jpgibart/projet_cd:2.0
       state: started
       ports:
        - "8080:8080"
