@@ -29,3 +29,8 @@ l'appli (branche master) dans un container sur le serveur de prod.
 
 playbook_test.yml : fichier ansible pour déployer et faire tourner 
 l'appli(branche develop) dans un container sur le serveur de test.
+
+
+La branche Master est déployée sur le serveur de prod et est exposée sur le port 8080.
+
+La branche Develop est déployée sur le serveur de test et est exposée sur le port 8081.
