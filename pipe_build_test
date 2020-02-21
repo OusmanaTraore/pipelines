@@ -8,6 +8,11 @@ node('slavejenkins') {
     def  registryCredential = 'dockerhub'
     def  dockerImage = ''
 
+//on réalise un pseudo hook sur TOUS les gits du projet ci-dessous toutes les minutes
+
+    properties([pipelineTriggers([pollSCM('* * * * *')])])
+
+
 //premier stage : on récupère le pipeline dans notre projet
 
     stage('recup sur Git du Jenkinsfile'){       
