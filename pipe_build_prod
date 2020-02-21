@@ -1,51 +1,64 @@
 // on lance les jobs sur le slave Jenkins
+
 node('slavejenkins') {
 
 // on définit les variables d'environnement pour l'image Docker avec un credential pour se connecter à Docker hub
+
     def  registry = "jpgibart/projet_cd"
     def  registryCredential = 'dockerhub'
     def  dockerImage = ''
 
 
 //premier stage : on récupère le pipeline dans notre projet
+
     stage('on va chercher le pipeline'){       
         git url: 'https://gitlab.com/projetcd/pipelines.git'
     } 
         
 //on va chercher la branche master de notre appli sur git et on la build avec maven
+
     stage('on va chercher devopsapp sur Gitlab') {
+    
         // Get some code from a GitHub repository
+        
         git branch: 'master', url: 'https://gitlab.com/projetcd/devopsapp.git'
     }
     
 //on build notre projet
+
     stage('on build avec maven le war') {
-        
         withMaven(
-        // Maven installation declared in the Jenkins "Global Tool Configuration"
+        
+        // la variable est configurée dans Jenkins "Global Tool Configuration"
+        
             maven: 'maven') {
 
-        // Run the maven build
+        // on build
+        
             sh "mvn clean package"
         }
     }
 
 //on rappelle notre projet avec git pour récupérer notre Dockerfile
+
     stage('on va chercher notre Dockerfile sur Git') {
-        // Get some code from a GitHub repository
         git url: 'https://gitlab.com/projetcd/pipelines.git'
+        
         //on ajoute notre war dans le Dockerfile pour l'image
+        
         sh "echo '\nCOPY target/devops-1.0.war /bin' >> Dockerfile"
     }
 
 //on build l'image docker avec un tag de version jenkins
-    stage('Building docker Image') {        
+
+    stage('on build notre docker Image') {        
         script {
             dockerImage = docker.build(registry + ":${currentBuild.number}", ".")        
         }
     }
     
 //on push l'image sur Dockerhub    
+
     stage('Push docker Image'){
         script{
             docker.withRegistry('', registryCredential){
@@ -54,17 +67,22 @@ node('slavejenkins') {
         } 
     }
     
-    stage('Cloning Git for playbook ansible'){       
-                git url: 'https://gitlab.com/projetcd/pipelines.git'
+//on va encore rechercher notre projet pour obtenir notre playbook
+
+    stage('on git notre playbook'){       
+        git url: 'https://gitlab.com/projetcd/pipelines.git'
     }
 
-    stage('changing version in our playbook') {
-        
+
+//on change la version à déployer dans le playbook avec un sed
+
+    stage('configuration du playbook') {
         sh "sed -i 's/projet_cd/projet_cd:${currentBuild.number}/' playbook_prod.yml"
     }
 
+//on déploie sur le serveur avec Ansible
 
-    stage('Deploiement Ansible prod') {
+    stage('Deploiement Ansible en prod') {
         ansiblePlaybook (
             colorized: true, 
             become: true,
