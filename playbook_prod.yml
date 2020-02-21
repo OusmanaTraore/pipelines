@@ -2,11 +2,7 @@
 - hosts: server_prod
   become: yes
   tasks:
-#  - name: Stop a container
-#    docker_container:
-#    name: devopsappprod
-#    state: stopped
-  - name: run the devops container
+  - name: run the devops prod container
     docker_container:
       name: devopsappprod
       image: jpgibart/projet_cd
