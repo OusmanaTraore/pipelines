@@ -5,7 +5,7 @@
   - name: run the devops container
     docker_container:
       name: devopsapp
-      image: jpgibart/projet_cd:2.0
+      image: jpgibart/projet_cd:latest
       state: started
       ports:
        - "8080:8080"
