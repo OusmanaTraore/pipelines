@@ -10,7 +10,7 @@ node('slavejenkins') {
 
 //on réalise un pseudo hook sur TOUS les gits du projet ci-dessous toutes les minutes
 
-    properties([pipelineTriggers([pollSCM('* * * * *')])])
+properties([pipelineTriggers([pollSCM('* * * * *')])])
 
 
 //premier stage : on récupère le pipeline dans notre projet
